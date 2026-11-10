@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b0cbry25eprpy"]
+
+[node name="Node2D" type="Node2D" unique_id=297752612]
+
+[node name="Label" type="Label" parent="." unique_id=462780734]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Hellp"
