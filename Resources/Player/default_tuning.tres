@@ -2,7 +2,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/player_tuning.gd" id="1"]
 [resource]
 script = ExtResource("1")
-walk_speed = 190.0
+walk_speed = 140.0
 acceleration = 1600.0
 deceleration = 2100.0
 gravity = 1500.0

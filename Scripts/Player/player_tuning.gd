@@ -1,5 +1,5 @@
 extends Resource
-@export var walk_speed: float = 190.0
+@export var walk_speed: float = 140.0
 @export var acceleration: float = 1600.0
 @export var deceleration: float = 2100.0
 @export var gravity: float = 1500.0
