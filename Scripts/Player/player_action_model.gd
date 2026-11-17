@@ -8,11 +8,14 @@ var cooldown_left: float = 0.0
 var cooldown_running: bool = false
 var waiting_for_landing: bool = false
 var reward_used: bool = false
+var last_run_tap: int = 0
+var run_tap_age: float = 999.0
 func is_invulnerable() -> bool:
 	return phase == "dodge"
 func begin_dodge(grounded: bool, facing: int) -> bool:
 	if phase != "free" or cooldown_left > 0.0 or waiting_for_landing:
 		return false
+	clear_run_taps()
 	phase = "dodge"
 	phase_elapsed = 0.0
 	locked_facing = facing
@@ -57,3 +60,28 @@ func resolve_hit() -> String:
 		reward_used = true
 		return "perfect"
 	return "evaded"
+
+func clear_run_taps() -> void:
+	last_run_tap = 0
+	run_tap_age = 999.0
+func record_run_input(real_delta: float, axis: float, left_edge: bool, right_edge: bool, eligible: bool) -> bool:
+	run_tap_age += real_delta
+	if not eligible:
+		clear_run_taps()
+		return false
+	if not left_edge and not right_edge:
+		return false
+	if axis == 0 or (left_edge and right_edge):
+		clear_run_taps()
+		return false
+	var pressed_direction := -1 if left_edge else 1
+	if pressed_direction * axis <= 0:
+		clear_run_taps()
+		return false
+	if last_run_tap == pressed_direction and run_tap_age <= tuning.double_tap_window + 0.000001:
+		running = true
+		clear_run_taps()
+		return true
+	last_run_tap = pressed_direction
+	run_tap_age = 0.0
+	return false

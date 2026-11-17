@@ -57,7 +57,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	var phase: String = player.actions.phase
 	var ready_text := "WAIT FOR LANDING" if player.actions.waiting_for_landing else ("READY" if player.actions.cooldown_left <= 0 else "%.1f s" % player.actions.cooldown_left)
-	status.text = "A / D  WALK    W  JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nCLUB COMBAT PLAYGROUND\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
+	status.text = "A / D WALK (DOUBLE TAP RUN)    W JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nCLUB COMBAT PLAYGROUND\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
 		"GROUNDED" if player.is_on_floor() else "AIRBORNE",
 		"RUN" if player.actions.running else phase.to_upper(), ready_text,
 		player.health, player.damage_count, player.perfect_count,
@@ -68,7 +68,7 @@ func _process(_delta: float) -> void:
 	status.text += "\nRMB AIM + LMB BIND  |  CHARGES %d/%d  |  %s  |  Y MOVING TARGETS" % [
 		player.talismans.charges, player.talismans.config.capacity,
 		"AIMING" if player.talismans.aiming else ("COMBAT RECHARGE" if player.talismans.combat_left > 0 else "REST RECHARGE")]
-	status.text += "\nAUTO LEDGE CLIMB: %s  |  CLIMBS %d" % ["CLIMBING" if player.climb.active else "READY", player.climb.climb_count]
+	status.text += "\nW + TOWARD LEDGE: %s  |  CLIMBS %d" % ["CLIMBING" if player.climb.active else "READY", player.climb.climb_count]
 	queue_redraw()
 func _draw() -> void:
 	for x in range(0, 1281, 40):
@@ -92,7 +92,7 @@ func _add_climb_platform() -> void:
 	visual.color = Color(0.36,0.58,0.5)
 	platform.add_child(visual)
 	var label := Label.new()
-	label.text = "AUTO CLIMB"
+	label.text = "W + D / A"
 	label.position = Vector2(-55,-34)
 	label.add_theme_font_size_override("font_size",14)
 	platform.add_child(label)

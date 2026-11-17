@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 	var was_grounded := is_on_floor()
 	var feedback = get_tree().get_first_node_in_group("combat_feedback")
 	if feedback != null and feedback.is_frozen():
+		actions.clear_run_taps()
 		var input_facing := facing if direction == 0 else (1 if direction > 0 else -1)
 		if Input.is_action_just_pressed("attack") and actions.phase == "free" and not talismans.aiming and not climb.active:
 			melee.request_attack(was_grounded, input_facing)
@@ -74,6 +75,9 @@ func _physics_process(delta: float) -> void:
 	hurt_left = maxf(0, hurt_left - delta)
 	climb.tick(delta)
 	talismans.step(delta, was_grounded, actions.phase == "free" and not melee.model.is_attacking() and hurt_left <= 0 and not climb.active)
+	actions.record_run_input(delta / maxf(Engine.time_scale,0.001), direction,
+		Input.is_action_just_pressed("move_left"),Input.is_action_just_pressed("move_right"),
+		was_grounded and actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and not climb.active and hurt_left <= 0)
 	if climb.active:
 		_step_climb(delta)
 		return
@@ -91,7 +95,7 @@ func _physics_process(delta: float) -> void:
 			talismans.fire()
 		else:
 			melee.request_attack(was_grounded, attack_facing)
-	if not was_grounded and actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and hurt_left <= 0 and climb.try_start(facing):
+	if not was_grounded and Input.is_action_pressed("jump") and direction * facing > 0 and actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and hurt_left <= 0 and climb.try_start(facing):
 		melee.cancel()
 		talismans.cancel_aim()
 		actions.running = false

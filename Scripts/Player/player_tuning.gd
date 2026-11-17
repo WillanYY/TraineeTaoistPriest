@@ -9,6 +9,7 @@ extends Resource
 
 @export_group("Dodge")
 @export var run_speed: float = 280.0
+@export_range(0.05,0.6) var double_tap_window: float = 0.25
 @export var dodge_duration: float = 0.2
 @export var dodge_recovery: float = 0.16
 @export var dodge_distance: float = 120.0
