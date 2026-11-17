@@ -6,6 +6,14 @@ func _ready() -> void:
 			var texture := sprite_frames.get_frame_texture(animation_name, i)
 			var bounds := texture.get_image().get_used_rect()
 			foot_offsets[str(animation_name) + ":" + str(i)] = texture.get_height() - bounds.end.y
+	# Idle frames share a canvas/stance. A one-pixel sole change must
+	# not translate the entire character like a new foot placement.
+	var idle_offset := INF
+	for i in sprite_frames.get_frame_count("idle"):
+		idle_offset = minf(idle_offset, float(foot_offsets["idle:" + str(i)]))
+	for i in sprite_frames.get_frame_count("idle"):
+		foot_offsets["idle:" + str(i)] = idle_offset
+	animation_changed.connect(_align_feet)
 	frame_changed.connect(_align_feet)
 	_align_feet()
 func _align_feet() -> void:

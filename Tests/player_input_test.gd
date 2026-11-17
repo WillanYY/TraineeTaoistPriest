@@ -28,6 +28,19 @@ func _run() -> void:
 	root.add_child(scene)
 	await frames(15)
 	var player = scene.get_node("Player")
+	var body_min: float = player.position.y
+	var body_max: float = player.position.y
+	var offset_min: float = player.view.offset.y
+	var offset_max: float = player.view.offset.y
+	for i in 160:
+		await frames(1)
+		body_min = minf(body_min, player.position.y)
+		body_max = maxf(body_max, player.position.y)
+		offset_min = minf(offset_min, player.view.offset.y)
+		offset_max = maxf(offset_max, player.view.offset.y)
+	print("IDLE_STABILITY: body_range=", body_max-body_min, "; offset_range=", offset_max-offset_min)
+	check(body_max-body_min < 0.01, "Idle physics body must stay still")
+	check(offset_max-offset_min < 0.01, "Idle must keep a fixed visual anchor across frames")
 	var start: Vector2 = player.position
 	key(KEY_D, true)
 	await frames(20)
@@ -105,6 +118,6 @@ func _run() -> void:
 	key(KEY_W, false)
 	await frames(12)
 	check(player.is_on_floor() and absf(player.position.y - 420) < 1, "Platform reachable from step")
-	check(absf(player.view.position.y + player.view.offset.y - player.view.sprite_frames.get_frame_texture(player.view.animation, player.view.frame).get_height() / 2.0 + player.view.sprite_frames.get_frame_texture(player.view.animation, player.view.frame).get_image().get_used_rect().end.y) < 1, "Visible feet aligned with body origin")
+	check(absf(player.view.position.y + player.view.offset.y - player.view.sprite_frames.get_frame_texture(player.view.animation, player.view.frame).get_height() / 2.0 + player.view.sprite_frames.get_frame_texture(player.view.animation, player.view.frame).get_image().get_used_rect().end.y) <= 1, "Visible feet aligned with body origin")
 	print("PLAYER_INPUT_CHECKS: ", check_count - failures.size(), "/", check_count, "; short_height=", ground_y-short_top, "; held_height=",ground_y-high_top)
 	quit(0 if failures.is_empty() else 1)
