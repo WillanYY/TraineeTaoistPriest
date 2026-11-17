@@ -40,6 +40,17 @@ func receive_hit(damage: int = 10) -> String:
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	var was_grounded := is_on_floor()
+	var feedback = get_tree().get_first_node_in_group("combat_feedback")
+	if feedback != null and feedback.is_frozen():
+		var input_facing := facing if direction == 0 else (1 if direction > 0 else -1)
+		if Input.is_action_just_pressed("attack") and actions.phase == "free":
+			melee.request_attack(was_grounded, input_facing)
+		if Input.is_action_just_pressed("dodge") and actions.begin_dodge(was_grounded, facing):
+			melee.cancel()
+			velocity.y = 0
+			feedback.release_freeze()
+		view.pause()
+		return
 	var previous_phase: String = actions.phase
 	actions.step(delta, direction, was_grounded)
 	if previous_phase == "dodge" and actions.phase != "dodge":

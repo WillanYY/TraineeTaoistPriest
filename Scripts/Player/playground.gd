@@ -1,8 +1,10 @@
 extends Node2D
+const HitFeedback = preload("res://Scripts/Combat/hit_feedback.gd")
 const Target = preload("res://Scripts/Combat/practice_target.gd")
 const AttackDevice = preload("res://Scripts/Combat/practice_attack.gd")
 @onready var player = $Player
 @onready var status: Label = $HUD/Status
+var feedback = HitFeedback.new()
 var attack_device: Area2D
 var spawn_point: Vector2
 func _ready() -> void:
@@ -11,6 +13,9 @@ func _ready() -> void:
 		target.name = "PracticeTarget" + str(x)
 		target.position = Vector2(x, 580)
 		add_child(target)
+	feedback.name = "CombatFeedback"
+	add_child(feedback)
+	feedback.bind_player(player)
 	spawn_point = player.position
 	attack_device = AttackDevice.new()
 	attack_device.name = "AttackDevice"
@@ -26,7 +31,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if event.keycode == KEY_T:
 			attack_device.toggle()
 		elif event.keycode == KEY_R:
+			feedback.reset()
 			player.bullet_time.reset()
+			player.bullet_time.trigger_count = 0
+			player.melee.hit_count = 0
 			player.actions = player.ActionModel.new()
 			player.actions.tuning = player.tuning
 			player.melee.cancel()
@@ -42,7 +50,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	var phase: String = player.actions.phase
 	var ready_text := "WAIT FOR LANDING" if player.actions.waiting_for_landing else ("READY" if player.actions.cooldown_left <= 0 else "%.1f s" % player.actions.cooldown_left)
-	status.text = "A / D  WALK    W  JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nPHASE 3  /  TWO HIT COMBO\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
+	status.text = "A / D  WALK    W  JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nCLUB COMBAT PLAYGROUND\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
 		"GROUNDED" if player.is_on_floor() else "AIRBORNE",
 		"RUN" if player.actions.running else phase.to_upper(), ready_text,
 		player.health, player.damage_count, player.perfect_count,

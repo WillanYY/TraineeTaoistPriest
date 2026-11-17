@@ -17,6 +17,9 @@ func _ready() -> void:
 	collider.position = Vector2(0, -50)
 	add_child(collider)
 func _physics_process(delta: float) -> void:
+	var feedback = get_tree().get_first_node_in_group("combat_feedback")
+	if feedback != null and feedback.is_frozen():
+		return
 	if not enabled:
 		queue_redraw()
 		return
