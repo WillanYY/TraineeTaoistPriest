@@ -15,3 +15,10 @@ extends Resource
 @export var dodge_cooldown: float = 2.0
 @export var bullet_time_duration: float = 0.12
 @export_range(0.05, 1.0) var bullet_time_scale: float = 0.25
+
+@export_group("Melee")
+@export var attack_one: Resource = preload("res://Resources/Player/attack_one.tres")
+@export var attack_two: Resource = preload("res://Resources/Player/attack_two.tres")
+@export var assist_range: float = 135.0
+@export var assist_distance: float = 36.0
+@export var target_spacing: float = 48.0

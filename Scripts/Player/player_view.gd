@@ -1,17 +1,17 @@
 extends AnimatedSprite2D
 var foot_offsets: Dictionary = {}
 func _ready() -> void:
-	var extra = load("res://Resources/Player/dodge_frames.tres")
-	# Copy the frame library locally; do not mutate the shared authored asset.
 	sprite_frames = sprite_frames.duplicate()
-	for animation_name in extra.get_animation_names():
-		if animation_name == "default":
-			continue
-		sprite_frames.add_animation(animation_name)
-		sprite_frames.set_animation_speed(animation_name, extra.get_animation_speed(animation_name))
-		sprite_frames.set_animation_loop(animation_name, extra.get_animation_loop(animation_name))
-		for i in extra.get_frame_count(animation_name):
-			sprite_frames.add_frame(animation_name, extra.get_frame_texture(animation_name, i))
+	for library in ["res://Resources/Player/dodge_frames.tres", "res://Resources/Player/melee_frames.tres"]:
+		var extra = load(library)
+		for animation_name in extra.get_animation_names():
+			if animation_name == "default":
+				continue
+			sprite_frames.add_animation(animation_name)
+			sprite_frames.set_animation_speed(animation_name, extra.get_animation_speed(animation_name))
+			sprite_frames.set_animation_loop(animation_name, extra.get_animation_loop(animation_name))
+			for i in extra.get_frame_count(animation_name):
+				sprite_frames.add_frame(animation_name, extra.get_frame_texture(animation_name, i))
 	for animation_name in sprite_frames.get_animation_names():
 		for i in sprite_frames.get_frame_count(animation_name):
 			var texture := sprite_frames.get_frame_texture(animation_name, i)
@@ -71,3 +71,20 @@ func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool,
 		play("run" if running else "walk")
 	else:
 		play("idle")
+
+func present_melee(model) -> void:
+	flip_h = model.locked_facing < 0
+	modulate = Color.WHITE
+	landing_left = 0.0
+	var definition: Resource = model.definition()
+	var bounds: Vector2i = definition.action_frames
+	var duration: float = definition.action_duration
+	if model.phase == "startup":
+		bounds = definition.startup_frames
+		duration = definition.startup_duration
+	elif model.phase == "recovery":
+		bounds = definition.recovery_frames
+		duration = definition.recovery_duration
+	play(definition.animation_name)
+	pause()
+	frame = mini(bounds.y, bounds.x + int(model.elapsed / maxf(duration, 0.001) * (bounds.y-bounds.x+1)))

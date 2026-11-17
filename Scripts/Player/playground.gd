@@ -1,10 +1,16 @@
 extends Node2D
+const Target = preload("res://Scripts/Combat/practice_target.gd")
 const AttackDevice = preload("res://Scripts/Combat/practice_attack.gd")
 @onready var player = $Player
 @onready var status: Label = $HUD/Status
 var attack_device: Area2D
 var spawn_point: Vector2
 func _ready() -> void:
+	for x in [300, 980]:
+		var target := Target.new()
+		target.name = "PracticeTarget" + str(x)
+		target.position = Vector2(x, 580)
+		add_child(target)
 	spawn_point = player.position
 	attack_device = AttackDevice.new()
 	attack_device.name = "AttackDevice"
@@ -23,6 +29,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			player.bullet_time.reset()
 			player.actions = player.ActionModel.new()
 			player.actions.tuning = player.tuning
+			player.melee.cancel()
+			for target in get_tree().get_nodes_in_group("practice_target"):
+				target.reset_target()
 			player.position = spawn_point
 			player.velocity = Vector2.ZERO
 			player.health = 100
@@ -33,11 +42,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	var phase: String = player.actions.phase
 	var ready_text := "WAIT FOR LANDING" if player.actions.waiting_for_landing else ("READY" if player.actions.cooldown_left <= 0 else "%.1f s" % player.actions.cooldown_left)
-	status.text = "A / D  WALK    W  JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nPHASE 2  /  DODGE + RUN\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
+	status.text = "A / D  WALK    W  JUMP    SPACE  DODGE    T  ATTACK ZONE    R  RESET\nPHASE 3  /  TWO HIT COMBO\n\n%s  |  %s  |  DODGE: %s\nHP %d   HITS %d   PERFECT %d   ATTACK ZONE: %s\nCYAN = INVULNERABLE   /   RELEASE MOVE TO END RUN" % [
 		"GROUNDED" if player.is_on_floor() else "AIRBORNE",
 		"RUN" if player.actions.running else phase.to_upper(), ready_text,
 		player.health, player.damage_count, player.perfect_count,
 		"ON" if attack_device.enabled else "OFF"]
+	status.text += "\nLMB  MELEE  |  %s %d  |  NEXT: %s  |  HITS: %d" % [
+		player.melee.model.phase.to_upper(), player.melee.model.segment,
+		"BUFFERED" if player.melee.model.pending else "-", player.melee.hit_count]
 	queue_redraw()
 func _draw() -> void:
 	for x in range(0, 1281, 40):
