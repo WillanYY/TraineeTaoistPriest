@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3]
+[ext_resource type="PackedScene" path="res://Scenes/Player/Player.tscn" id="1"]
+[ext_resource type="Script" path="res://Scripts/Player/playground.gd" id="2"]
+[sub_resource type="RectangleShape2D" id="Floor"]
+size = Vector2(1280,40)
+[sub_resource type="RectangleShape2D" id="Wall"]
+size = Vector2(40,720)
+[sub_resource type="RectangleShape2D" id="Step"]
+size = Vector2(140,60)
+[sub_resource type="RectangleShape2D" id="Platform"]
+size = Vector2(180,20)
+[sub_resource type="RectangleShape2D" id="Ceiling"]
+size = Vector2(200,20)
+[node name="PlayerPlayground" type="Node2D"]
+script = ExtResource("2")
+[node name="Background" type="Polygon2D" parent="."]
+show_behind_parent = true
+polygon = PackedVector2Array(0,0,1280,0,1280,720,0,720)
+color = Color(0.075,0.09,0.12,1)
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(200,580)
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(640,600)
+[node name="Collider" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("Floor")
+[node name="Art" type="Polygon2D" parent="Ground"]
+polygon = PackedVector2Array(-640,-20,640,-20,640,20,-640,20)
+color = Color(0.28,0.40,0.43,1)
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(20,360)
+[node name="Collider" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("Wall")
+[node name="Art" type="Polygon2D" parent="LeftWall"]
+polygon = PackedVector2Array(-20,-360,20,-360,20,360,-20,360)
+color = Color(0.28,0.40,0.43,1)
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1260,360)
+[node name="Collider" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("Wall")
+[node name="Art" type="Polygon2D" parent="RightWall"]
+polygon = PackedVector2Array(-20,-360,20,-360,20,360,-20,360)
+color = Color(0.28,0.40,0.43,1)
+[node name="Step" type="StaticBody2D" parent="."]
+position = Vector2(450,550)
+[node name="Collider" type="CollisionShape2D" parent="Step"]
+shape = SubResource("Step")
+[node name="Art" type="Polygon2D" parent="Step"]
+polygon = PackedVector2Array(-70,-30,70,-30,70,30,-70,30)
+color = Color(0.28,0.40,0.43,1)
+[node name="Platform" type="StaticBody2D" parent="."]
+position = Vector2(640,430)
+[node name="Collider" type="CollisionShape2D" parent="Platform"]
+shape = SubResource("Platform")
+[node name="Art" type="Polygon2D" parent="Platform"]
+polygon = PackedVector2Array(-90,-10,90,-10,90,10,-90,10)
+color = Color(0.28,0.40,0.43,1)
+[node name="Ceiling" type="StaticBody2D" parent="."]
+position = Vector2(850,430)
+[node name="Collider" type="CollisionShape2D" parent="Ceiling"]
+shape = SubResource("Ceiling")
+[node name="Art" type="Polygon2D" parent="Ceiling"]
+polygon = PackedVector2Array(-100,-10,100,-10,100,10,-100,10)
+color = Color(0.28,0.40,0.43,1)
+[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Status" type="Label" parent="HUD"]
+offset_left = 64.0
+offset_top = 36.0
+theme_override_colors/font_color = Color(0.85,0.90,0.80,1)
+theme_override_font_sizes/font_size = 22

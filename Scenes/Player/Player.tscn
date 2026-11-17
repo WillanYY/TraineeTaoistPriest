@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="Script" path="res://Scripts/Player/player_controller.gd" id="1"]
+[ext_resource type="Resource" path="res://Resources/Player/default_tuning.tres" id="2"]
+[ext_resource type="SpriteFrames" path="res://Resources/Player/player_frames.tres" id="3"]
+[ext_resource type="Script" path="res://Scripts/Player/player_view.gd" id="4"]
+[sub_resource type="CapsuleShape2D" id="Body"]
+radius = 16.0
+height = 88.0
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1")
+tuning = ExtResource("2")
+floor_snap_length = 5.0
+[node name="Body" type="CollisionShape2D" parent="."]
+position = Vector2(0,-44)
+shape = SubResource("Body")
+[node name="Visual" type="AnimatedSprite2D" parent="."]
+position = Vector2(0,-64)
+texture_filter = 1
+sprite_frames = ExtResource("3")
+animation = &"idle"
+script = ExtResource("4")
