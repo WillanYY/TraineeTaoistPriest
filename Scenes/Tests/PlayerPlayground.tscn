@@ -1,69 +1,98 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://dwce8ilk0qopu"]
+
 [ext_resource type="PackedScene" path="res://Scenes/Player/Player.tscn" id="1"]
-[ext_resource type="Script" path="res://Scripts/Player/playground.gd" id="2"]
+[ext_resource type="Script" uid="uid://bnloovtpyxln7" path="res://Scripts/Player/playground.gd" id="2"]
+
 [sub_resource type="RectangleShape2D" id="Floor"]
-size = Vector2(1280,40)
+size = Vector2(1280, 40)
+
 [sub_resource type="RectangleShape2D" id="Wall"]
-size = Vector2(40,720)
+size = Vector2(40, 720)
+
 [sub_resource type="RectangleShape2D" id="Step"]
-size = Vector2(140,60)
+size = Vector2(140, 60)
+
 [sub_resource type="RectangleShape2D" id="Platform"]
-size = Vector2(180,20)
+size = Vector2(180, 20)
+
 [sub_resource type="RectangleShape2D" id="Ceiling"]
-size = Vector2(200,20)
-[node name="PlayerPlayground" type="Node2D"]
+size = Vector2(200, 20)
+
+[node name="PlayerPlayground" type="Node2D" unique_id=1865446773]
 script = ExtResource("2")
-[node name="Background" type="Polygon2D" parent="."]
+
+[node name="Background" type="Polygon2D" parent="." unique_id=1280546019]
 show_behind_parent = true
-polygon = PackedVector2Array(0,0,1280,0,1280,720,0,720)
-color = Color(0.075,0.09,0.12,1)
-[node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(200,580)
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(640,600)
-[node name="Collider" type="CollisionShape2D" parent="Ground"]
+color = Color(0.075, 0.09, 0.12, 1)
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 720, 0, 720)
+
+[node name="Player" parent="." unique_id=1049837933 instance=ExtResource("1")]
+position = Vector2(169, 538)
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1584147062]
+position = Vector2(640, 600)
+
+[node name="Collider" type="CollisionShape2D" parent="Ground" unique_id=818731661]
 shape = SubResource("Floor")
-[node name="Art" type="Polygon2D" parent="Ground"]
-polygon = PackedVector2Array(-640,-20,640,-20,640,20,-640,20)
-color = Color(0.28,0.40,0.43,1)
-[node name="LeftWall" type="StaticBody2D" parent="."]
-position = Vector2(20,360)
-[node name="Collider" type="CollisionShape2D" parent="LeftWall"]
+
+[node name="Art" type="Polygon2D" parent="Ground" unique_id=1819735984]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-640, -20, 640, -20, 640, 20, -640, 20)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=636611050]
+position = Vector2(20, 360)
+
+[node name="Collider" type="CollisionShape2D" parent="LeftWall" unique_id=1110560692]
 shape = SubResource("Wall")
-[node name="Art" type="Polygon2D" parent="LeftWall"]
-polygon = PackedVector2Array(-20,-360,20,-360,20,360,-20,360)
-color = Color(0.28,0.40,0.43,1)
-[node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(1260,360)
-[node name="Collider" type="CollisionShape2D" parent="RightWall"]
+
+[node name="Art" type="Polygon2D" parent="LeftWall" unique_id=1473494799]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1002937726]
+position = Vector2(1260, 360)
+
+[node name="Collider" type="CollisionShape2D" parent="RightWall" unique_id=342685137]
 shape = SubResource("Wall")
-[node name="Art" type="Polygon2D" parent="RightWall"]
-polygon = PackedVector2Array(-20,-360,20,-360,20,360,-20,360)
-color = Color(0.28,0.40,0.43,1)
-[node name="Step" type="StaticBody2D" parent="."]
-position = Vector2(450,550)
-[node name="Collider" type="CollisionShape2D" parent="Step"]
+
+[node name="Art" type="Polygon2D" parent="RightWall" unique_id=157470267]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="Step" type="StaticBody2D" parent="." unique_id=1129256174]
+position = Vector2(450, 550)
+
+[node name="Collider" type="CollisionShape2D" parent="Step" unique_id=1201902330]
 shape = SubResource("Step")
-[node name="Art" type="Polygon2D" parent="Step"]
-polygon = PackedVector2Array(-70,-30,70,-30,70,30,-70,30)
-color = Color(0.28,0.40,0.43,1)
-[node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(640,430)
-[node name="Collider" type="CollisionShape2D" parent="Platform"]
+
+[node name="Art" type="Polygon2D" parent="Step" unique_id=1509633922]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-70, -30, 70, -30, 70, 30, -70, 30)
+
+[node name="Platform" type="StaticBody2D" parent="." unique_id=1982060655]
+position = Vector2(640, 430)
+
+[node name="Collider" type="CollisionShape2D" parent="Platform" unique_id=613934082]
 shape = SubResource("Platform")
-[node name="Art" type="Polygon2D" parent="Platform"]
-polygon = PackedVector2Array(-90,-10,90,-10,90,10,-90,10)
-color = Color(0.28,0.40,0.43,1)
-[node name="Ceiling" type="StaticBody2D" parent="."]
-position = Vector2(850,430)
-[node name="Collider" type="CollisionShape2D" parent="Ceiling"]
+
+[node name="Art" type="Polygon2D" parent="Platform" unique_id=1696365989]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-90, -10, 90, -10, 90, 10, -90, 10)
+
+[node name="Ceiling" type="StaticBody2D" parent="." unique_id=1418558977]
+position = Vector2(850, 430)
+
+[node name="Collider" type="CollisionShape2D" parent="Ceiling" unique_id=47950752]
 shape = SubResource("Ceiling")
-[node name="Art" type="Polygon2D" parent="Ceiling"]
-polygon = PackedVector2Array(-100,-10,100,-10,100,10,-100,10)
-color = Color(0.28,0.40,0.43,1)
-[node name="HUD" type="CanvasLayer" parent="."]
-[node name="Status" type="Label" parent="HUD"]
+
+[node name="Art" type="Polygon2D" parent="Ceiling" unique_id=155962750]
+color = Color(0.28, 0.4, 0.43, 1)
+polygon = PackedVector2Array(-100, -10, 100, -10, 100, 10, -100, 10)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=659198739]
+
+[node name="Status" type="Label" parent="HUD" unique_id=1742721077]
 offset_left = 64.0
 offset_top = 36.0
-theme_override_colors/font_color = Color(0.85,0.90,0.80,1)
+theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 22

@@ -1,11 +1,6 @@
-[gd_resource type="Resource" load_steps=2 format=3]
-[ext_resource type="Script" path="res://Scripts/Player/player_tuning.gd" id="1"]
+[gd_resource type="Resource" format=3 uid="uid://32pppmk6f41s"]
+
+[ext_resource type="Script" uid="uid://imfdy34flw4v" path="res://Scripts/Player/player_tuning.gd" id="1"]
+
 [resource]
 script = ExtResource("1")
-walk_speed = 140.0
-acceleration = 1600.0
-deceleration = 2100.0
-gravity = 1500.0
-jump_speed = 610.0
-jump_release_ratio = 0.4
-max_fall_speed = 900.0

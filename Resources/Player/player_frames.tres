@@ -1,50 +1,196 @@
-[gd_resource type="SpriteFrames" load_steps=45 format=3]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0001.png" id="1"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0002.png" id="2"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0003.png" id="3"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0004.png" id="4"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0005.png" id="5"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0006.png" id="6"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0007.png" id="7"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0008.png" id="8"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0009.png" id="9"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0010.png" id="10"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0011.png" id="11"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/待机 (1)/frame_0012.png" id="12"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0001.png" id="13"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0002.png" id="14"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0003.png" id="15"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0004.png" id="16"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0005.png" id="17"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0006.png" id="18"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0007.png" id="19"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0008.png" id="20"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0009.png" id="21"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0010.png" id="22"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0011.png" id="23"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0012.png" id="24"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0013.png" id="25"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0014.png" id="26"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0015.png" id="27"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0016.png" id="28"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0017.png" id="29"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0018.png" id="30"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0019.png" id="31"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0020.png" id="32"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/行走/frame_0021.png" id="33"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0001.png" id="34"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0002.png" id="35"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0003.png" id="36"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0004.png" id="37"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0005.png" id="38"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0006.png" id="39"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0007.png" id="40"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0008.png" id="41"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0009.png" id="42"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0010.png" id="43"]
-[ext_resource type="Texture2D" path="res://Texture/Character/Player/跳跃/frame_0011.png" id="44"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cxuob5kj8ijuw"]
+
+[ext_resource type="Texture2D" uid="uid://byic5nyeejdfy" path="res://Texture/Character/Player/待机 (1)/frame_0001.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://ne40n75inkds" path="res://Texture/Character/Player/待机 (1)/frame_0002.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://djxn1osfd0hw0" path="res://Texture/Character/Player/待机 (1)/frame_0003.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dt6rmmdnhwtdb" path="res://Texture/Character/Player/待机 (1)/frame_0004.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://baq8ws0kjhbnb" path="res://Texture/Character/Player/待机 (1)/frame_0005.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://bkwl7q5lqvlod" path="res://Texture/Character/Player/待机 (1)/frame_0006.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://cwl5ettugssao" path="res://Texture/Character/Player/待机 (1)/frame_0007.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://b5540ef0sdcl5" path="res://Texture/Character/Player/待机 (1)/frame_0008.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://bmgarvmxuj6kp" path="res://Texture/Character/Player/待机 (1)/frame_0009.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://dpmafgektua15" path="res://Texture/Character/Player/待机 (1)/frame_0010.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://da2ke2047m6by" path="res://Texture/Character/Player/待机 (1)/frame_0011.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://ctrxvw6hffhx4" path="res://Texture/Character/Player/待机 (1)/frame_0012.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://b5huyfsc7qxfu" path="res://Texture/Character/Player/行走/frame_0001.png" id="13"]
+[ext_resource type="Texture2D" uid="uid://d1c2fst5qgg0j" path="res://Texture/Character/Player/行走/frame_0002.png" id="14"]
+[ext_resource type="Texture2D" uid="uid://c8vpqbnerupar" path="res://Texture/Character/Player/行走/frame_0003.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://2pr5urkl7dip" path="res://Texture/Character/Player/行走/frame_0004.png" id="16"]
+[ext_resource type="Texture2D" uid="uid://bb8h66qke3xhl" path="res://Texture/Character/Player/行走/frame_0005.png" id="17"]
+[ext_resource type="Texture2D" uid="uid://bm06bcxkvof0v" path="res://Texture/Character/Player/行走/frame_0006.png" id="18"]
+[ext_resource type="Texture2D" uid="uid://gmj4nr6t04vx" path="res://Texture/Character/Player/行走/frame_0007.png" id="19"]
+[ext_resource type="Texture2D" uid="uid://bnxvbftlui55i" path="res://Texture/Character/Player/行走/frame_0008.png" id="20"]
+[ext_resource type="Texture2D" uid="uid://cf35cgcop7m73" path="res://Texture/Character/Player/行走/frame_0009.png" id="21"]
+[ext_resource type="Texture2D" uid="uid://jyikjf6lk20c" path="res://Texture/Character/Player/行走/frame_0010.png" id="22"]
+[ext_resource type="Texture2D" uid="uid://b5ccui4w1sgja" path="res://Texture/Character/Player/行走/frame_0011.png" id="23"]
+[ext_resource type="Texture2D" uid="uid://dhmwmvpesqhor" path="res://Texture/Character/Player/行走/frame_0012.png" id="24"]
+[ext_resource type="Texture2D" uid="uid://chbhxvkqamlet" path="res://Texture/Character/Player/行走/frame_0013.png" id="25"]
+[ext_resource type="Texture2D" uid="uid://dtd0c4tydm0s3" path="res://Texture/Character/Player/行走/frame_0014.png" id="26"]
+[ext_resource type="Texture2D" uid="uid://bbpkrkof6vp8j" path="res://Texture/Character/Player/行走/frame_0015.png" id="27"]
+[ext_resource type="Texture2D" uid="uid://4t6jyncta3ld" path="res://Texture/Character/Player/行走/frame_0016.png" id="28"]
+[ext_resource type="Texture2D" uid="uid://c27ppp5d3qh1b" path="res://Texture/Character/Player/行走/frame_0017.png" id="29"]
+[ext_resource type="Texture2D" uid="uid://kwcllgdnu28q" path="res://Texture/Character/Player/行走/frame_0018.png" id="30"]
+[ext_resource type="Texture2D" uid="uid://b3r5x6y53wmo" path="res://Texture/Character/Player/行走/frame_0019.png" id="31"]
+[ext_resource type="Texture2D" uid="uid://drves3vm751q8" path="res://Texture/Character/Player/行走/frame_0020.png" id="32"]
+[ext_resource type="Texture2D" uid="uid://u82ad08s16q4" path="res://Texture/Character/Player/行走/frame_0021.png" id="33"]
+[ext_resource type="Texture2D" uid="uid://dcjkkqakcxhnt" path="res://Texture/Character/Player/跳跃/frame_0001.png" id="34"]
+[ext_resource type="Texture2D" uid="uid://boamo2qjmln34" path="res://Texture/Character/Player/跳跃/frame_0002.png" id="35"]
+[ext_resource type="Texture2D" uid="uid://cgth70em2wify" path="res://Texture/Character/Player/跳跃/frame_0003.png" id="36"]
+[ext_resource type="Texture2D" uid="uid://gj2bm8r4cuni" path="res://Texture/Character/Player/跳跃/frame_0004.png" id="37"]
+[ext_resource type="Texture2D" uid="uid://cfdy3btjlu022" path="res://Texture/Character/Player/跳跃/frame_0005.png" id="38"]
+[ext_resource type="Texture2D" uid="uid://2tfleb0lih6f" path="res://Texture/Character/Player/跳跃/frame_0006.png" id="39"]
+[ext_resource type="Texture2D" uid="uid://bjba4x6bqghij" path="res://Texture/Character/Player/跳跃/frame_0007.png" id="40"]
+[ext_resource type="Texture2D" uid="uid://b7qhmnkc1v2ny" path="res://Texture/Character/Player/跳跃/frame_0008.png" id="41"]
+[ext_resource type="Texture2D" uid="uid://cmjd7ibcfc0nb" path="res://Texture/Character/Player/跳跃/frame_0009.png" id="42"]
+[ext_resource type="Texture2D" uid="uid://canp67v5x8i3q" path="res://Texture/Character/Player/跳跃/frame_0010.png" id="43"]
+[ext_resource type="Texture2D" uid="uid://b76mlk5826fn7" path="res://Texture/Character/Player/跳跃/frame_0011.png" id="44"]
 
 [resource]
-animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("1")},{"duration": 1.0, "texture": ExtResource("2")},{"duration": 1.0, "texture": ExtResource("3")},{"duration": 1.0, "texture": ExtResource("4")},{"duration": 1.0, "texture": ExtResource("5")},{"duration": 1.0, "texture": ExtResource("6")},{"duration": 1.0, "texture": ExtResource("7")},{"duration": 1.0, "texture": ExtResource("8")},{"duration": 1.0, "texture": ExtResource("9")},{"duration": 1.0, "texture": ExtResource("10")},{"duration": 1.0, "texture": ExtResource("11")},{"duration": 1.0, "texture": ExtResource("12")}], "loop": true, "name": &"idle", "speed": 5.0},
-{"frames": [{"duration": 1.0, "texture": ExtResource("13")},{"duration": 1.0, "texture": ExtResource("14")},{"duration": 1.0, "texture": ExtResource("15")},{"duration": 1.0, "texture": ExtResource("16")},{"duration": 1.0, "texture": ExtResource("17")},{"duration": 1.0, "texture": ExtResource("18")},{"duration": 1.0, "texture": ExtResource("19")},{"duration": 1.0, "texture": ExtResource("20")},{"duration": 1.0, "texture": ExtResource("21")},{"duration": 1.0, "texture": ExtResource("22")},{"duration": 1.0, "texture": ExtResource("23")},{"duration": 1.0, "texture": ExtResource("24")},{"duration": 1.0, "texture": ExtResource("25")},{"duration": 1.0, "texture": ExtResource("26")},{"duration": 1.0, "texture": ExtResource("27")},{"duration": 1.0, "texture": ExtResource("28")},{"duration": 1.0, "texture": ExtResource("29")},{"duration": 1.0, "texture": ExtResource("30")},{"duration": 1.0, "texture": ExtResource("31")},{"duration": 1.0, "texture": ExtResource("32")},{"duration": 1.0, "texture": ExtResource("33")}], "loop": true, "name": &"walk", "speed": 13.3},
-{"frames": [{"duration": 1.0, "texture": ExtResource("34")},{"duration": 1.0, "texture": ExtResource("35")},{"duration": 1.0, "texture": ExtResource("36")},{"duration": 1.0, "texture": ExtResource("37")},{"duration": 1.0, "texture": ExtResource("38")},{"duration": 1.0, "texture": ExtResource("39")},{"duration": 1.0, "texture": ExtResource("40")},{"duration": 1.0, "texture": ExtResource("41")},{"duration": 1.0, "texture": ExtResource("42")},{"duration": 1.0, "texture": ExtResource("43")},{"duration": 1.0, "texture": ExtResource("44")}], "loop": false, "name": &"jump", "speed": 16.0}]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 18.0
+}]

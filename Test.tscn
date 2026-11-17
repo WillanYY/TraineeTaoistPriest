@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://b0cbry25eprpy"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Tests/PlayerPlayground.tscn" id="1_myinc"]
+[ext_resource type="PackedScene" uid="uid://dwce8ilk0qopu" path="res://Scenes/Tests/PlayerPlayground.tscn" id="1_myinc"]
 
 [node name="Node2D" type="Node2D" unique_id=297752612]
-
-[node name="MCP_Connection_Test" type="Node2D" parent="." unique_id=1879745864]
 
 [node name="Playground" parent="." unique_id=258909015 instance=ExtResource("1_myinc")]
