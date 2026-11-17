@@ -4,6 +4,10 @@ var failures: Array[String] = []
 var scene
 var player
 var ledge: StaticBody2D
+var invalid_contact_pixels: int = 0
+var max_hand_error: float = 0
+var max_foot_error: float = 0
+var contact_frames: Dictionary = {}
 func _initialize() -> void:
 	call_deferred("_run")
 func check(ok: bool, message: String) -> void:
@@ -31,6 +35,30 @@ func block(pos: Vector2, size: Vector2) -> StaticBody2D:
 	body.add_child(collider)
 	scene.add_child(body)
 	return body
+func contact_is_painted(texture: Texture2D, pixel: Vector2, hand: bool) -> bool:
+	var point := Vector2i(pixel if hand else pixel-Vector2(0,0.5))
+	if not Rect2i(Vector2i.ZERO,Vector2i(texture.get_size())).has_point(point):
+		return false
+	return texture.get_image().get_pixelv(point).a > 0.5
+func track_contact(lip: Vector2) -> void:
+	if not player.climb.active or player.view.animation != "climb":
+		return
+	var profile = load("res://Resources/Player/climb_contact_profile.tres")
+	var index: int = player.view.frame
+	var texture = player.view.sprite_frames.get_frame_texture("climb",index)
+	if not contact_is_painted(texture,profile.contact_pixels[index],index < profile.hand_frame_count):
+		invalid_contact_pixels += 1
+	var local: Vector2 = profile.contact_pixels[index] - texture.get_size()/2
+	local.x *= player.facing
+	local += player.view.offset
+	var actual: Vector2 = player.view.to_global(local)
+	var expected: Vector2 = lip + Vector2((player.climb.landing.x-lip.x) * profile.forward_fractions[index],0)
+	var error := actual.distance_to(expected)
+	if index < profile.hand_frame_count:
+		max_hand_error = maxf(max_hand_error,error)
+	else:
+		max_foot_error = maxf(max_foot_error,error)
+	contact_frames[str(player.facing)+":"+str(index)] = true
 func reset_fixture(pos: Vector2 = Vector2(270,580), facing: int = 1) -> void:
 	key(KEY_A,false)
 	key(KEY_D,false)
@@ -70,6 +98,7 @@ func _run() -> void:
 	var started := await wait_for_climb()
 	check(started, "Jump near right-facing ledge automatically climbs")
 	check(player.view.animation == "climb", "Uses supplied climb animation")
+	track_contact(Vector2(300,390))
 	key(KEY_D,false)
 	key(KEY_W,false)
 	var locked: int = player.facing
@@ -79,7 +108,9 @@ func _run() -> void:
 	check(player.climb.active and player.facing == locked and player.actions.phase == "free", "Climb locks input without starting dodge")
 	key(KEY_A,false)
 	key(KEY_SPACE,false)
-	await frames(45)
+	for i in 45:
+		track_contact(Vector2(300,390))
+		await frames(1)
 	check(not player.climb.active and player.is_on_floor(), "Climb finishes grounded")
 	check(absf(player.position.y - 390) < 1 and player.position.x > 316, "Actor stands safely inside ledge")
 	check(player.velocity.is_zero_approx(), "No launch velocity leaks from climbing")
@@ -88,9 +119,12 @@ func _run() -> void:
 	key(KEY_W,true)
 	started = await wait_for_climb()
 	check(started and player.climb.locked_facing == -1, "Left-facing ledge also climbs")
+	track_contact(Vector2(950,420))
 	key(KEY_A,false)
 	key(KEY_W,false)
-	await frames(45)
+	for i in 45:
+		track_contact(Vector2(950,420))
+		await frames(1)
 	check(absf(player.position.y - 420) < 1 and player.is_on_floor(), "Left climb lands on platform top")
 	# Ledge exists, but there is not enough standing clearance.
 	var roof := block(Vector2(360,300),Vector2(120,20))
@@ -113,6 +147,7 @@ func _run() -> void:
 	player.receive_hit()
 	await frames(1)
 	check(not player.climb.active and player.health == 90, "Climb grants no invulnerability and hit interrupts")
+	check(player.view.position.is_equal_approx(Vector2(0,-64)), "Interrupted climb restores normal visual origin")
 	await reset_fixture()
 	key(KEY_D,true)
 	key(KEY_W,true)
@@ -147,6 +182,14 @@ func _run() -> void:
 	await frames(1)
 	key(KEY_R,false)
 	check(not player.climb.active and player.climb.climb_count == 0, "Reset clears climbing state")
+	check(max_hand_error <= 0.75, "Rendered climbing hand must stay on lip")
+	check(max_foot_error <= 0.75, "Rendered standing sole must land on platform")
+	check(contact_frames.size() >= 22, "Contact regression samples both directions across animation")
+	check(player.view.position.is_equal_approx(Vector2(0,-64)), "Normal actions restore default visual origin")
+	check(invalid_contact_pixels == 0, "Contact markers sit on painted hands and soles")
+	var first_texture = player.view.sprite_frames.get_frame_texture("climb",0)
+	check(not contact_is_painted(first_texture,Vector2.ZERO,true), "Contact validation rejects transparent marker")
+	print("CLIMB_CONTACT_ERROR hand=",max_hand_error," sole=",max_foot_error," samples=",contact_frames.size())
 	print("CLIMB_INPUT_CHECKS: ",checks-failures.size(),"/",checks)
 	player.bullet_time.reset()
 	scene.feedback.reset()

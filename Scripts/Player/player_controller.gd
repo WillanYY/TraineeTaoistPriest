@@ -139,7 +139,7 @@ func _physics_process(delta: float) -> void:
 func _step_climb(delta: float) -> void:
 	facing = climb.locked_facing
 	climb.advance(delta)
-	view.present_climb(climb.progress(), facing)
+	view.present_climb(climb.progress(), facing, climb.lip_point, climb.landing)
 	if not climb.active:
 		# move_and_collide does not update CharacterBody2D floor classification.
 		velocity = Vector2(0,30)

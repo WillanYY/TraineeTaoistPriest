@@ -9,6 +9,7 @@ var start: Vector2
 var outside: Vector2
 var lift: Vector2
 var across: Vector2
+var lip_point: Vector2
 var landing: Vector2
 var climb_count: int = 0
 var abort_count: int = 0
@@ -68,6 +69,7 @@ func try_start(facing: int) -> bool:
 	outside = outside_point
 	lift = corner
 	across = upper_end
+	lip_point = Vector2(wall.position.x,top.position.y)
 	landing = end
 	elapsed = 0
 	active = true

@@ -1,5 +1,7 @@
 extends AnimatedSprite2D
+@export var climb_contacts: Resource = preload("res://Resources/Player/climb_contact_profile.tres")
 var foot_offsets: Dictionary = {}
+var normal_position := Vector2(0,-64)
 func _ready() -> void:
 	sprite_frames = sprite_frames.duplicate()
 	for library in ["res://Resources/Player/dodge_frames.tres", "res://Resources/Player/melee_frames.tres", "res://Resources/Player/climb_frames.tres"]:
@@ -28,12 +30,16 @@ func _ready() -> void:
 	frame_changed.connect(_align_feet)
 	_align_feet()
 func _align_feet() -> void:
+	if animation == &"climb":
+		offset = Vector2.ZERO
+		return
 	offset.y = float(foot_offsets.get(str(animation) + ":" + str(frame), 0.0))
 var airborne_time: float = 0.0
 var landing_left: float = 0.0
 func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool, delta: float,
 	phase: String = "free", phase_elapsed: float = 0.0, running: bool = false,
 	hurt_left: float = 0.0, dodge_duration: float = 0.2, recovery_duration: float = 0.16) -> void:
+	position = normal_position
 	flip_h = facing < 0
 	modulate = Color(0.55, 1.0, 1.0) if phase == "dodge" else (Color(1.0, 0.45, 0.45) if hurt_left > 0 else Color.WHITE)
 	if phase == "dodge" or phase == "recovery":
@@ -73,6 +79,7 @@ func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool,
 		play("idle")
 
 func present_melee(model) -> void:
+	position = normal_position
 	flip_h = model.locked_facing < 0
 	modulate = Color.WHITE
 	landing_left = 0.0
@@ -89,10 +96,18 @@ func present_melee(model) -> void:
 	pause()
 	frame = mini(bounds.y, bounds.x + int(model.elapsed / maxf(duration, 0.001) * (bounds.y-bounds.x+1)))
 
-func present_climb(progress: float, facing: int) -> void:
+func present_climb(progress: float, facing: int, lip: Vector2, landing: Vector2) -> void:
 	flip_h = facing < 0
 	modulate = Color.WHITE
 	landing_left = 0
 	play("climb")
 	pause()
 	frame = mini(sprite_frames.get_frame_count("climb")-1,int(progress*sprite_frames.get_frame_count("climb")))
+	# Climbing is authored around hand/sole contacts, not around the standing
+	# collision body's safe traversal. Keep the actual painted contact on the lip.
+	offset = Vector2.ZERO
+	var texture := sprite_frames.get_frame_texture("climb",frame)
+	var contact: Vector2 = climb_contacts.contact_pixels[frame] - texture.get_size()/2
+	contact.x *= facing
+	var support := lip + Vector2((landing.x-lip.x)*climb_contacts.forward_fractions[frame],0)
+	global_position = support-contact

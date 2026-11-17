@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://Scripts/Player/climb_contact_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+contact_pixels = PackedVector2Array(47,27,47,27,48,28,48,29,46,36,56,46,54,59,48,73,54,85,48,99,42.5,109,42.5,113)
+forward_fractions = PackedFloat32Array(0,0,0,0,0,0,0,0,0.27272728,0.63636363,0.90909091,1)
+hand_frame_count = 8
