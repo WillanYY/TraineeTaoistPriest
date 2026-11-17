@@ -1,6 +1,17 @@
 extends AnimatedSprite2D
 var foot_offsets: Dictionary = {}
 func _ready() -> void:
+	var extra = load("res://Resources/Player/dodge_frames.tres")
+	# Copy the frame library locally; do not mutate the shared authored asset.
+	sprite_frames = sprite_frames.duplicate()
+	for animation_name in extra.get_animation_names():
+		if animation_name == "default":
+			continue
+		sprite_frames.add_animation(animation_name)
+		sprite_frames.set_animation_speed(animation_name, extra.get_animation_speed(animation_name))
+		sprite_frames.set_animation_loop(animation_name, extra.get_animation_loop(animation_name))
+		for i in extra.get_frame_count(animation_name):
+			sprite_frames.add_frame(animation_name, extra.get_frame_texture(animation_name, i))
 	for animation_name in sprite_frames.get_animation_names():
 		for i in sprite_frames.get_frame_count(animation_name):
 			var texture := sprite_frames.get_frame_texture(animation_name, i)
@@ -20,8 +31,23 @@ func _align_feet() -> void:
 	offset.y = float(foot_offsets.get(str(animation) + ":" + str(frame), 0.0))
 var airborne_time: float = 0.0
 var landing_left: float = 0.0
-func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool, delta: float) -> void:
+func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool, delta: float,
+	phase: String = "free", phase_elapsed: float = 0.0, running: bool = false,
+	hurt_left: float = 0.0, dodge_duration: float = 0.2, recovery_duration: float = 0.16) -> void:
 	flip_h = facing < 0
+	modulate = Color(0.55, 1.0, 1.0) if phase == "dodge" else (Color(1.0, 0.45, 0.45) if hurt_left > 0 else Color.WHITE)
+	if phase == "dodge" or phase == "recovery":
+		landing_left = 0.0
+		play("dodge")
+		pause()
+		if phase == "dodge":
+			frame = mini(7, int(phase_elapsed / dodge_duration * 8))
+		else:
+			frame = mini(11, 8 + int(phase_elapsed / recovery_duration * 4))
+		return
+	if hurt_left > 0 and grounded:
+		play("hurt")
+		return
 	if not grounded:
 		landing_left = 0.0
 		if was_grounded:
@@ -42,6 +68,6 @@ func present(facing: int, grounded: bool, velocity: Vector2, was_grounded: bool,
 		pause()
 		frame = 7 if landing_left > 0.05 else 8
 	elif absf(velocity.x) > 5:
-		play("walk")
+		play("run" if running else "walk")
 	else:
 		play("idle")
