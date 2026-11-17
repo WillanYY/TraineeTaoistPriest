@@ -30,11 +30,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_T:
 			attack_device.toggle()
+		elif event.keycode == KEY_Y:
+			for target in get_tree().get_nodes_in_group("practice_target"):
+				target.patrol_enabled = not target.patrol_enabled
 		elif event.keycode == KEY_R:
 			feedback.reset()
 			player.bullet_time.reset()
 			player.bullet_time.trigger_count = 0
 			player.melee.hit_count = 0
+			player.talismans.reset()
 			player.actions = player.ActionModel.new()
 			player.actions.tuning = player.tuning
 			player.melee.cancel()
@@ -58,6 +62,9 @@ func _process(_delta: float) -> void:
 	status.text += "\nLMB  MELEE  |  %s %d  |  NEXT: %s  |  HITS: %d" % [
 		player.melee.model.phase.to_upper(), player.melee.model.segment,
 		"BUFFERED" if player.melee.model.pending else "-", player.melee.hit_count]
+	status.text += "\nRMB AIM + LMB BIND  |  CHARGES %d/%d  |  %s  |  Y MOVING TARGETS" % [
+		player.talismans.charges, player.talismans.config.capacity,
+		"AIMING" if player.talismans.aiming else ("COMBAT RECHARGE" if player.talismans.combat_left > 0 else "REST RECHARGE")]
 	queue_redraw()
 func _draw() -> void:
 	for x in range(0, 1281, 40):

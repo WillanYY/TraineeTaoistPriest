@@ -2,6 +2,7 @@ extends CharacterBody2D
 signal damaged
 signal perfect_dodge
 const ActionModel = preload("res://Scripts/Player/player_action_model.gd")
+const Talisman = preload("res://Scripts/Talisman/talisman_controller.gd")
 const Melee = preload("res://Scripts/Combat/melee_controller.gd")
 const BulletTime = preload("res://Scripts/Combat/bullet_time.gd")
 @export var tuning: Resource
@@ -15,6 +16,7 @@ var hurt_left: float = 0.0
 var actions = ActionModel.new()
 var bullet_time = BulletTime.new()
 var melee = Melee.new()
+var talismans = Talisman.new()
 @onready var view: AnimatedSprite2D = $Visual
 func _ready() -> void:
 	actions.tuning = tuning
@@ -23,7 +25,12 @@ func _ready() -> void:
 	melee.name = "Melee"
 	melee.configure(self, tuning)
 	add_child(melee)
+	talismans.name = "Talismans"
+	talismans.configure(self)
+	add_child(talismans)
+	melee.swing_started.connect(talismans.mark_combat)
 func receive_hit(damage: int = 10) -> String:
+	talismans.mark_combat()
 	var result: String = actions.resolve_hit()
 	if result == "perfect":
 		perfect_count += 1
@@ -31,6 +38,7 @@ func receive_hit(damage: int = 10) -> String:
 		perfect_dodge.emit()
 	elif result == "hurt":
 		melee.cancel()
+		talismans.cancel_aim()
 		actions.running = false
 		health = maxi(0, health - damage)
 		damage_count += 1
@@ -43,10 +51,11 @@ func _physics_process(delta: float) -> void:
 	var feedback = get_tree().get_first_node_in_group("combat_feedback")
 	if feedback != null and feedback.is_frozen():
 		var input_facing := facing if direction == 0 else (1 if direction > 0 else -1)
-		if Input.is_action_just_pressed("attack") and actions.phase == "free":
+		if Input.is_action_just_pressed("attack") and actions.phase == "free" and not talismans.aiming:
 			melee.request_attack(was_grounded, input_facing)
 		if Input.is_action_just_pressed("dodge") and actions.begin_dodge(was_grounded, facing):
 			melee.cancel()
+			talismans.cancel_aim()
 			velocity.y = 0
 			feedback.release_freeze()
 		view.pause()
@@ -57,14 +66,21 @@ func _physics_process(delta: float) -> void:
 		# The fixed dodge velocity must not leak into recovery/run acceleration.
 		velocity.x = 0.0
 	hurt_left = maxf(0, hurt_left - delta)
-	if actions.phase == "free" and not melee.model.is_attacking() and direction != 0:
+	talismans.step(delta, was_grounded, actions.phase == "free" and not melee.model.is_attacking() and hurt_left <= 0)
+	if talismans.aiming:
+		actions.running = false
+	if actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and direction != 0:
 		facing = 1 if direction > 0 else -1
 	if Input.is_action_just_pressed("dodge") and actions.begin_dodge(was_grounded, facing):
 		velocity.y = 0.0
 		melee.cancel()
+		talismans.cancel_aim()
 	if actions.phase == "free" and Input.is_action_just_pressed("attack"):
 		var attack_facing := facing if direction == 0 else (1 if direction > 0 else -1)
-		melee.request_attack(was_grounded, attack_facing)
+		if talismans.aiming:
+			talismans.fire()
+		else:
+			melee.request_attack(was_grounded, attack_facing)
 	var attack_motion: float = melee.step(delta, direction, was_grounded)
 	if melee.model.is_attacking():
 		facing = melee.model.locked_facing
@@ -76,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if melee.model.is_attacking():
 			velocity.x = attack_motion / maxf(delta, 0.000001)
-		elif actions.phase == "recovery":
+		elif actions.phase == "recovery" or talismans.aiming:
 			velocity.x = 0.0
 		else:
 			var speed: float = tuning.run_speed if actions.running else tuning.walk_speed
