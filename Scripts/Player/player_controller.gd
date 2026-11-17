@@ -2,6 +2,7 @@ extends CharacterBody2D
 signal damaged
 signal perfect_dodge
 const ActionModel = preload("res://Scripts/Player/player_action_model.gd")
+const LedgeClimb = preload("res://Scripts/Player/ledge_climb.gd")
 const Talisman = preload("res://Scripts/Talisman/talisman_controller.gd")
 const Melee = preload("res://Scripts/Combat/melee_controller.gd")
 const BulletTime = preload("res://Scripts/Combat/bullet_time.gd")
@@ -17,6 +18,7 @@ var actions = ActionModel.new()
 var bullet_time = BulletTime.new()
 var melee = Melee.new()
 var talismans = Talisman.new()
+var climb = LedgeClimb.new()
 @onready var view: AnimatedSprite2D = $Visual
 func _ready() -> void:
 	actions.tuning = tuning
@@ -29,6 +31,9 @@ func _ready() -> void:
 	talismans.configure(self)
 	add_child(talismans)
 	melee.swing_started.connect(talismans.mark_combat)
+	climb.name = "LedgeClimb"
+	climb.configure(self)
+	add_child(climb)
 func receive_hit(damage: int = 10) -> String:
 	talismans.mark_combat()
 	var result: String = actions.resolve_hit()
@@ -39,6 +44,7 @@ func receive_hit(damage: int = 10) -> String:
 	elif result == "hurt":
 		melee.cancel()
 		talismans.cancel_aim()
+		climb.cancel()
 		actions.running = false
 		health = maxi(0, health - damage)
 		damage_count += 1
@@ -51,9 +57,9 @@ func _physics_process(delta: float) -> void:
 	var feedback = get_tree().get_first_node_in_group("combat_feedback")
 	if feedback != null and feedback.is_frozen():
 		var input_facing := facing if direction == 0 else (1 if direction > 0 else -1)
-		if Input.is_action_just_pressed("attack") and actions.phase == "free" and not talismans.aiming:
+		if Input.is_action_just_pressed("attack") and actions.phase == "free" and not talismans.aiming and not climb.active:
 			melee.request_attack(was_grounded, input_facing)
-		if Input.is_action_just_pressed("dodge") and actions.begin_dodge(was_grounded, facing):
+		if not climb.active and Input.is_action_just_pressed("dodge") and actions.begin_dodge(was_grounded, facing):
 			melee.cancel()
 			talismans.cancel_aim()
 			velocity.y = 0
@@ -66,7 +72,11 @@ func _physics_process(delta: float) -> void:
 		# The fixed dodge velocity must not leak into recovery/run acceleration.
 		velocity.x = 0.0
 	hurt_left = maxf(0, hurt_left - delta)
-	talismans.step(delta, was_grounded, actions.phase == "free" and not melee.model.is_attacking() and hurt_left <= 0)
+	climb.tick(delta)
+	talismans.step(delta, was_grounded, actions.phase == "free" and not melee.model.is_attacking() and hurt_left <= 0 and not climb.active)
+	if climb.active:
+		_step_climb(delta)
+		return
 	if talismans.aiming:
 		actions.running = false
 	if actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and direction != 0:
@@ -81,6 +91,12 @@ func _physics_process(delta: float) -> void:
 			talismans.fire()
 		else:
 			melee.request_attack(was_grounded, attack_facing)
+	if not was_grounded and actions.phase == "free" and not melee.model.is_attacking() and not talismans.aiming and hurt_left <= 0 and climb.try_start(facing):
+		melee.cancel()
+		talismans.cancel_aim()
+		actions.running = false
+		_step_climb(delta)
+		return
 	var attack_motion: float = melee.step(delta, direction, was_grounded)
 	if melee.model.is_attacking():
 		facing = melee.model.locked_facing
@@ -119,3 +135,12 @@ func _physics_process(delta: float) -> void:
 		melee.cancel()
 		position = Vector2(200, 580)
 		velocity = Vector2.ZERO
+
+func _step_climb(delta: float) -> void:
+	facing = climb.locked_facing
+	climb.advance(delta)
+	view.present_climb(climb.progress(), facing)
+	if not climb.active:
+		# move_and_collide does not update CharacterBody2D floor classification.
+		velocity = Vector2(0,30)
+		move_and_slide()

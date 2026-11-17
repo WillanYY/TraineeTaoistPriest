@@ -2,7 +2,7 @@ extends AnimatedSprite2D
 var foot_offsets: Dictionary = {}
 func _ready() -> void:
 	sprite_frames = sprite_frames.duplicate()
-	for library in ["res://Resources/Player/dodge_frames.tres", "res://Resources/Player/melee_frames.tres"]:
+	for library in ["res://Resources/Player/dodge_frames.tres", "res://Resources/Player/melee_frames.tres", "res://Resources/Player/climb_frames.tres"]:
 		var extra = load(library)
 		for animation_name in extra.get_animation_names():
 			if animation_name == "default":
@@ -88,3 +88,11 @@ func present_melee(model) -> void:
 	play(definition.animation_name)
 	pause()
 	frame = mini(bounds.y, bounds.x + int(model.elapsed / maxf(duration, 0.001) * (bounds.y-bounds.x+1)))
+
+func present_climb(progress: float, facing: int) -> void:
+	flip_h = facing < 0
+	modulate = Color.WHITE
+	landing_left = 0
+	play("climb")
+	pause()
+	frame = mini(sprite_frames.get_frame_count("climb")-1,int(progress*sprite_frames.get_frame_count("climb")))
